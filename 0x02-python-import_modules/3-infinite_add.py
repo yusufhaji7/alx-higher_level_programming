@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import sys
-count = 0
-for i in range(len(sys.argv)):
-    count += int(sys.argv[i])
-print(count)
+if __name__ == "__main__":
+    import sys
+    add = 0
+    for i in range(len(sys.argv) - 1):
+        add += int(sys.argv[i + 1])
+    print(f"{add}")
