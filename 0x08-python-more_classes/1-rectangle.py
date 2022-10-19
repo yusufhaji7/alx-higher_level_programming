@@ -6,10 +6,9 @@ class Rectangle:
     """
     attributes:
         width, height
-    methods: 
+    methods:
         getter and setter methods for height and width
     """
-
     def __init__(self, width=0, height=0):
         """inistantiate width and height"""
         self.height = height
