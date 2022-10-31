@@ -1,16 +1,13 @@
 #!/usr/bin/python3
-""" 10-main """
-from models.square import Square
+""" 17-main """
+from models.rectangle import Rectangle
 
 if __name__ == "__main__":
 
-    s1 = Square(5)
-    print(s1)
-    print(s1.size)
-    s1.size = 10
-    print(s1)
-
-    try:
-        s1.size = "9"
-    except Exception as e:
-        print("[{}] {}".format(e.__class__.__name__, e))
+    r1 = Rectangle(3, 5, 1)
+    r1_dictionary = r1.to_dictionary()
+    r2 = Rectangle.create(**r1_dictionary)
+    print(r1)
+    print(r2)
+    print(r1 is r2)
+    print(r1 == r2)
