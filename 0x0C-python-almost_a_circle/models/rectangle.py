@@ -76,8 +76,48 @@ class Rectangle(Base):
         return self.__width * self.__height
 
     def display(self):
-        for i in range(self.__height):
-            print(("\n" * self.__y) + "\n".join(((" " * self.__x) + ("#" * self.__width))))
+        print(("\n" * self.__y) +
+              "\n".join(((" " * self.__x) + ("#" * self.__width))
+                        for i in range(self.__height)))
 
     def __str__(self):
-        return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.__x, self.__y, self.__width, self.__height)
+        return "[Rectangle] ({}) {}/{} - {}/{}".format(
+                                                    self.id,
+                                                    self.__x,
+                                                    self.__y,
+                                                    self.__width,
+                                                    self.__height)
+
+    def update(self, *args, **kwargs):
+        if args and len(args) != 0:
+            num = 0
+            for arg in args:
+                if num == 0:
+                    if arg is None:
+                        self.__init__(self.width, self.height, self.x, self.y)
+                    else:
+                        self.id = arg
+                elif num == 1:
+                    self.width = arg
+                elif num == 2:
+                    self.height = arg
+                elif num == 3:
+                    self.x = arg
+                elif num == 4:
+                    self.y = arg
+                num += 1
+        elif kwargs and len(kwargs) != 0:
+            for key, value in kwargs.items():
+                if key == "id":
+                    if value is None:
+                        self.__init__(self.width, self.height, self.x, self.y)
+                    else:
+                        self.id = value
+                elif key == "width":
+                    self.width = value
+                elif key == "height":
+                    self.height = value
+                elif key == "x":
+                    self.x = value
+                elif key == "y":
+                    self.y = value
