@@ -18,10 +18,10 @@ class Rectangle(Base):
     def __init__(self, width, height, x=0, y=0, id=None):
         """constructor to initialize width, height, x and y"""
 
-        self.__width = width
-        self.__height = height
-        self.__x = x
-        self.__y = y
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
         super().__init__(id)
 
     @property
@@ -74,6 +74,7 @@ class Rectangle(Base):
         self.__y = value
 
     def area(self):
+        """ return area of a rectangle"""
         return self.__width * self.__height
 
     def display(self):
