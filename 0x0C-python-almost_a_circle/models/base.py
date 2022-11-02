@@ -1,20 +1,23 @@
 #!/usr/bin/python3
 """
-creating a class called Base.
+Base class
 """
-
-
 import json
 
+
 class Base:
-    """class attribute:
-        __nb_objects"""
+    """
+    Base class
+    """
 
     __nb_objects = 0
 
     def __init__(self, id=None):
-        """constructor with attribute ID"""
-        if id != None:
+        """
+        with public attribute id
+        :param id:
+        """
+        if id is not None:
             self.id = id
         else:
             Base.__nb_objects += 1
@@ -28,43 +31,59 @@ class Base:
 
     @classmethod
     def save_to_file(cls, list_objs):
+        """ save to file"""
+        for i in (list_objs):
+            dic_1 = i.to_dictionary()
+
+            name = i.__class__.__name__ + ".json"
+            with open(name, "w") as f:
+                f.write(cls.to_json_string(dic_1))
+
+    @classmethod
+    def save_to_file(cls, list_objs):
+        '''method: save_to_file
+        '''
+        list_dicts = []
+        if list_objs is not None:
+            for obj in list_objs:
+                tmp_dict = cls.to_dictionary(obj)
+                list_dicts.append(tmp_dict)
+            json_L_of_D = cls.to_json_string(list_dicts)
+        else:
+            json_L_of_D = "[]"
+
         filename = cls.__name__ + ".json"
 
-        with open(filename, "w") as f:
-            if list_objs is None:
-                f.write("[]")
-            else:
-                list_dicts = [o.to_dictionary() for o in list_objs]
-                f.write(Base.to_json_string(list_dicts))
+        with open(filename, "w") as file:
+            file.write(json_L_of_D)
 
     @staticmethod
     def from_json_string(json_string):
+        """from json to string"""
         if json_string is None:
             return []
         return json.loads(json_string)
 
     @classmethod
     def create(cls, **dictionary):
-        if dictionary and dictionary != {}:
-            if cls.__name__ == "Rectangle":
-                new = cls(1, 1)
-            else:
-                new = cls(1)
-            new.update(**dictionary)
-            return new
+        """ create"""
+        if cls.__name__ == 'Rectangle':
+            dummy = cls(1, 1)
+        else:
+            dummy = cls(1)
+        dummy.update(**dictionary)
+        return dummy
 
     @classmethod
-    def load_from_file_csv(cls):
-        filename = cls.__name__ + ".csv"
+    def load_from_file(cls):
+        """load from file"""
+        output = []
         try:
-            with open(filename, "r", newline="") as csvfile:
-                if cls.__name__ == "Rectangle":
-                    fieldnames = ["id", "width", "height", "x", "y"]
-                else:
-                    fieldnames = ["id", "size", "x", "y"]
-                list_dicts = csv.DictReader(csvfile, fieldnames=fieldnames)
-                list_dicts = [dict([k, int(v)] for k, v in d.items())
-                              for d in list_dicts]
-                return [cls.create(**d) for d in list_dicts]
-        except IOError:
-            return []
+            fname = cls.__name__ + ".json"
+            with open(fname, "r") as f:
+                ppd = cls.from_json_string(f.read())
+                for i in ppd:
+                    output.append(cls.create(**i))
+            return output
+        except:
+            return output
