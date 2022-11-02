@@ -1,23 +1,18 @@
 #!/usr/bin/python3
 """
-creating a class called rectangle that inherites from base class
+First Rectangle
 """
 
 
 from models.base import Base
 
+
 class Rectangle(Base):
     """
-    private instances:
-        __width
-        __height
-        __x
-        __y
+    class Rectangle inherits from Base
     """
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """constructor to initialize width, height, x and y"""
-
         self.width = width
         self.height = height
         self.x = x
@@ -26,10 +21,12 @@ class Rectangle(Base):
 
     @property
     def width(self):
+        """ getter method"""
         return self.__width
 
     @width.setter
     def width(self, value):
+        """ width setter"""
         if type(value) is not int:
             raise TypeError("width must be an integer")
         if value <= 0:
@@ -38,35 +35,40 @@ class Rectangle(Base):
 
     @property
     def height(self):
+        """ getter method"""
         return self.__height
-    
+
     @height.setter
     def height(self, value):
+        """ hight setter"""
         if type(value) is not int:
             raise TypeError("height must be an integer")
-        if value <=0:
+        if value <= 0:
             raise ValueError("height must be > 0")
         self.__height = value
 
     @property
     def x(self):
+        """ getter method"""
         return self.__x
 
     @x.setter
     def x(self, value):
+        """ x setter"""
         if type(value) is not int:
             raise TypeError("x must be an integer")
         if value < 0:
             raise ValueError("x must be >= 0")
         self.__x = value
-    
+
     @property
     def y(self):
+        """ getter method"""
         return self.__y
-
 
     @y.setter
     def y(self, value):
+        """y setter"""
         if type(value) is not int:
             raise TypeError("y must be an integer")
         if value < 0:
@@ -78,57 +80,57 @@ class Rectangle(Base):
         return self.__width * self.__height
 
     def display(self):
-        print(("\n" * self.__y) +
-              "\n".join(((" " * self.__x) + ("#" * self.__width))
-                        for i in range(self.__height)))
+        """ prints rectangle in stdout """
+        for m in range(self.__y):
+            print()
+
+        for i in range(self.__height):
+            for n in range(self.__x):
+                print(" ", end="")
+            for j in range(self.__width):
+                print("#", end="")
+            print()
 
     def __str__(self):
-        return "[Rectangle] ({}) {}/{} - {}/{}".format(
-                                                    self.id,
-                                                    self.__x,
-                                                    self.__y,
-                                                    self.__width,
-                                                    self.__height)
+        return ("[Rectangle] ({}) {}/{} - {}/{}"
+                .format(self.id, self.__x, self.__y,
+                        self.__width, self.__height))
 
     def update(self, *args, **kwargs):
-        if args and len(args) != 0:
-            num = 0
-            for arg in args:
-                if num == 0:
-                    if arg is None:
-                        self.__init__(self.width, self.height, self.x, self.y)
-                    else:
-                        self.id = arg
-                elif num == 1:
-                    self.width = arg
-                elif num == 2:
-                    self.height = arg
-                elif num == 3:
-                    self.x = arg
-                elif num == 4:
-                    self.y = arg
-                num += 1
-        elif kwargs and len(kwargs) != 0:
-            for key, value in kwargs.items():
-                if key == "id":
-                    if value is None:
-                        self.__init__(self.width, self.height, self.x, self.y)
-                    else:
-                        self.id = value
-                elif key == "width":
-                    self.width = value
-                elif key == "height":
-                    self.height = value
-                elif key == "x":
-                    self.x = value
-                elif key == "y":
-                    self.y = value
+        """ update rectangle """
+        for arg in args:
+            i = args.index(arg)
+            while i < len(args):
+                if i == 0:
+                    self.id = arg
+                elif i == 1:
+                    self.__width = arg
+                elif i == 2:
+                    self.__height = arg
+                elif i == 3:
+                    self.__x = arg
+                else:
+                    self.__y = arg
+                i += 1
+        for key, value in kwargs.items():
+            if key == "height":
+                self.__height = value
+            elif key == "width":
+                self.__width = value
+            elif key == "x":
+                self.__x = value
+            elif key == "y":
+                self.__y = value
+            elif key == "id":
+                self.id = value
 
     def to_dictionary(self):
-        return {
-                "id": self.id,
-                "x":  self.x,
-                "y": self.y,
-                "height": self.height,
-                "width": self.width
-                }
+        """ list out dictionary"""
+        dic = {
+            'x': self.__x,
+            'y': self.__y,
+            'id': self.id,
+            'width': self.__width,
+            'height': self.__height
+        }
+        return dic
